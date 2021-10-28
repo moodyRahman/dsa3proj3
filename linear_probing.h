@@ -1,5 +1,5 @@
-#ifndef QUADRATIC_PROBING_H
-#define QUADRATIC_PROBING_H
+#ifndef LINEAR_PROBING_H
+#define LINEAR_PROBING_H
 
 #include <vector>
 #include <algorithm>
@@ -10,7 +10,7 @@ namespace
 {
 
   // Internal method to test if a pstd::exceptionositive number is prime.
-  bool IsPrime(size_t n)
+  bool IsPrimeLinear(size_t n)
   {
     if (n == 2 || n == 3)
       return true;
@@ -26,11 +26,11 @@ namespace
   }
 
   // Internal method to return a prime number at least as large as n.
-  int NextPrime(size_t n)
+  int NextPrimeLinear(size_t n)
   {
     if (n % 2 == 0)
       ++n;
-    while (!IsPrime(n))
+    while (!IsPrimeLinear(n))
       n += 2;
     return n;
   }
@@ -39,7 +39,7 @@ namespace
 
 // Quadratic probing implementation.
 template <typename HashedObj>
-class HashTable
+class HashTableLinear
 {
 public:
   enum EntryType
@@ -49,24 +49,7 @@ public:
     DELETED
   };
 
-  struct HashTableLinear
-  {
-    HashedObj element_;
-    EntryType info_;
-
-    HashEntry(const HashedObj &e = HashedObj{}, EntryType i = EMPTY)
-        : element_{e}, info_{i} {}
-
-    HashEntry(HashedObj &&e, EntryType i = EMPTY)
-        : element_{std::move(e)}, info_{i} {}
-  };
-
-  std::vector<HashEntry> array_;
-  size_t current_size_;
-  size_t total_elements = 0;
-  size_t collisions = 0;
-
-  explicit HashTable(size_t size = 101) : array_(NextPrime(size))
+  explicit HashTableLinear(size_t size = 101) : array_(NextPrimeLinear(size))
   {
     MakeEmpty();
   }
@@ -95,6 +78,7 @@ public:
 
   bool Insert(const HashedObj &x)
   {
+    this->total_elements++;
     // Insert x as active
     size_t current_pos = FindPos(x);
     if (IsActive(current_pos))
@@ -113,6 +97,7 @@ public:
 
   bool Insert(HashedObj &&x)
   {
+    this->total_elements++;
     // Insert x as active
     size_t current_pos = FindPos(x);
     if (IsActive(current_pos))
@@ -126,7 +111,7 @@ public:
     {
       Rehash();
     }
-    
+
     return true;
   }
 
@@ -145,6 +130,34 @@ public:
     return collisions;
   }
 
+  int TotalElements()
+  {
+    return this->total_elements;
+  }
+
+  int InternalSize()
+  {
+    return this->array_.size();
+  }
+
+private:
+  struct HashEntry
+  {
+    HashedObj element_;
+    EntryType info_;
+
+    HashEntry(const HashedObj &e = HashedObj{}, EntryType i = EMPTY)
+        : element_{e}, info_{i} {}
+
+    HashEntry(HashedObj &&e, EntryType i = EMPTY)
+        : element_{std::move(e)}, info_{i} {}
+  };
+
+  std::vector<HashEntry> array_;
+  size_t current_size_;
+  size_t total_elements = 0;
+  size_t collisions = 0;
+
   bool IsActive(size_t current_pos) const
   {
     return array_[current_pos].info_ == ACTIVE;
@@ -152,15 +165,13 @@ public:
 
   size_t FindPos(const HashedObj &x)
   {
-    size_t offset = 1;
     size_t current_pos = InternalHash(x);
 
     while (array_[current_pos].info_ != EMPTY &&
            array_[current_pos].element_ != x)
     {
       collisions++;
-      current_pos += offset; // Compute ith probe.
-      offset += 2;
+      current_pos++;
       if (current_pos >= array_.size())
         current_pos -= array_.size();
     }
@@ -172,7 +183,7 @@ public:
     std::vector<HashEntry> old_array = array_;
 
     // Create new double-sized, empty table.
-    array_.resize(NextPrime(2 * old_array.size()));
+    array_.resize(NextPrimeLinear(2 * old_array.size()));
     for (auto &entry : array_)
       entry.info_ = EMPTY;
 
@@ -191,4 +202,4 @@ public:
   }
 };
 
-#endif // QUADRATIC_PROBING_H
+#endif // LINEAR_PROBING_H
