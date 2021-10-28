@@ -8,6 +8,7 @@
 //#include "double_hashing.h"
 
 #include "quadratic_probing.h"
+#include "linear_probing.h"
 
 using namespace std;
 
@@ -56,9 +57,10 @@ int testHashingWrapper(int argument_count, char **argument_list)
     if (param_flag == "linear")
     {
         // Uncomment below when you have implemented linear probing.
-        // HashTableLinear<string> linear_probing_table;
-        // TestFunctionForHashTable(linear_probing_table, words_filename,
-        // 			 query_filename);
+        std::cout << "linear testing" << std::endl;
+        HashTableLinear<string> linear_probing_table;
+        TestFunctionForHashTable(linear_probing_table, words_filename,
+        			 query_filename);
     }
     else if (param_flag == "quadratic")
     {
