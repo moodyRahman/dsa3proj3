@@ -7,14 +7,6 @@
 #include "hash_exceptions.h"
 #include "prime.h"
 
-namespace
-{
-
-  // Internal method to test if a pstd::exceptionositive number is prime.
-  
-
-} // namespace
-
 // Quadratic probing implementation.
 template <typename HashedObj>
 class HashTableLinear
