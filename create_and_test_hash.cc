@@ -28,25 +28,13 @@ void TestFunctionForHashTable(HashTableType &hash_table,
     while (wfile >> line)
     {
         hash_table.Insert(line);
-
     }
 
-
-    while (qfile >> line)
-    {
-        try
-        {
-            hash_table.Get(line);
-            std::cout << line << " found =====" << std::endl;
-        }
-        catch(const std::exception& e)
-        {
-            std::cout << line << " not found" << std::endl;
-        }
-    }
-
-    std::cout << "load factor: " << hash_table.TotalElements() / (float)hash_table.InternalSize() << std::endl;
-    std::cout << "total collisions: " << hash_table.TotalCollisions() / (float)hash_table.TotalElements() << std::endl;
+    std::cout << "number_of_elements: " << hash_table.TotalElements() << std::endl;
+    std::cout << "size_of_table: " << hash_table.InternalSize() << std::endl;
+    std::cout << "load_factor: " << hash_table.TotalElements() / (float)hash_table.InternalSize() << std::endl;
+    std::cout << "average_collisions: " << hash_table.TotalCollisions() / (float)hash_table.TotalElements() << std::endl;
+    std::cout << "total_collisions: " << hash_table.TotalCollisions() << std::endl;
 
 }
 
