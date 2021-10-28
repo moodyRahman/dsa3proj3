@@ -5,35 +5,13 @@
 #include <algorithm>
 #include <functional>
 #include "hash_exceptions.h"
+#include "prime.h"
 
 namespace
 {
 
   // Internal method to test if a pstd::exceptionositive number is prime.
-  bool IsPrimeLinear(size_t n)
-  {
-    if (n == 2 || n == 3)
-      return true;
-
-    if (n == 1 || n % 2 == 0)
-      return false;
-
-    for (int i = 3; i * i <= n; i += 2)
-      if (n % i == 0)
-        return false;
-
-    return true;
-  }
-
-  // Internal method to return a prime number at least as large as n.
-  int NextPrimeLinear(size_t n)
-  {
-    if (n % 2 == 0)
-      ++n;
-    while (!IsPrimeLinear(n))
-      n += 2;
-    return n;
-  }
+  
 
 } // namespace
 
@@ -49,7 +27,7 @@ public:
     DELETED
   };
 
-  explicit HashTableLinear(size_t size = 101) : array_(NextPrimeLinear(size))
+  explicit HashTableLinear(size_t size = 101) : array_(NextPrime(size))
   {
     MakeEmpty();
   }
@@ -183,7 +161,7 @@ private:
     std::vector<HashEntry> old_array = array_;
 
     // Create new double-sized, empty table.
-    array_.resize(NextPrimeLinear(2 * old_array.size()));
+    array_.resize(NextPrime(2 * old_array.size()));
     for (auto &entry : array_)
       entry.info_ = EMPTY;
 
