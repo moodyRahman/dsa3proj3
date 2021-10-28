@@ -9,6 +9,7 @@
 
 #include "quadratic_probing.h"
 #include "linear_probing.h"
+#include "double_hashing.h"
 
 using namespace std;
 
@@ -64,17 +65,19 @@ int testHashingWrapper(int argument_count, char **argument_list)
     }
     else if (param_flag == "quadratic")
     {
+        std::cout << "quadratic testing" << std::endl;
         HashTable<string> quadratic_probing_table;
         TestFunctionForHashTable(quadratic_probing_table, words_filename,
                                  query_filename);
     }
     else if (param_flag == "double")
     {
+        std::cout << "double testing" << std::endl;
         cout << "r_value: " << R << endl;
         // Uncomment below when you have implemented double hashing.
-        // HashTableDouble<string> double_probing_table;
-        // TestFunctionForHashTable(double_probing_table, words_filename,
-        // 			 query_filename);
+        HashTableDouble<string> double_probing_table;
+        TestFunctionForHashTable(double_probing_table, words_filename,
+        			 query_filename);
     }
     else
     {
