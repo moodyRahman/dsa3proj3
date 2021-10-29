@@ -15,7 +15,15 @@ using namespace std;
 // Creates and fills double hashing hash table with all words from
 // dictionary_file
 HashTableDouble<string> MakeDictionary(const string &dictionary_file) {
-  HashTableDouble<string> dictionary_hash;
+  string line;
+  fstream d_file(dictionary_file);
+  HashTableDouble<string> dictionary_hash(73, 101);
+
+  while (d_file >> line)
+  {
+    dictionary_hash.Insert(line);
+  }
+  
   // Fill dictionary_hash.
   return dictionary_hash;
 }
