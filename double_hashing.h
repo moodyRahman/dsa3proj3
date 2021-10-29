@@ -23,7 +23,7 @@ public:
     MakeEmpty();
   }
 	
-	HashTableDouble(int r_value_in, size_t size = 101) : array_(NextPrime(size)), r_value{r_value_in}
+	HashTableDouble(int r_value_in, size_t size) : r_value{r_value_in}, array_(NextPrime(size))
 	{
 		MakeEmpty();
 	}
@@ -115,7 +115,9 @@ public:
     return this->array_.size();
   }
 
+	
 private:
+	const int r_value;
   struct HashEntry
   {
     HashedObj element_;
@@ -132,7 +134,6 @@ private:
   size_t current_size_;
   size_t total_elements = 0;
   size_t collisions = 0;
-	const int r_value;
 
   bool IsActive(size_t current_pos) const
   {
@@ -141,17 +142,15 @@ private:
 
   size_t FindPos(const HashedObj &x)
   {
-    size_t offset = 1;
-    size_t current_pos = InternalHash(x);
 
+    size_t current_pos = InternalHash(x);
+    int i = 0;
     while (array_[current_pos].info_ != EMPTY &&
            array_[current_pos].element_ != x)
     {
       collisions++;
-      current_pos += offset; // Compute ith probe.
-      offset += 2;
-      if (current_pos >= array_.size())
-        current_pos -= array_.size();
+      i++;
+			current_pos = (current_pos + (i * r_value - (i%r_value))) % array_.size() ;
     }
     return current_pos;
   }

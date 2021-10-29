@@ -58,24 +58,21 @@ int testHashingWrapper(int argument_count, char **argument_list)
     if (param_flag == "linear")
     {
         // Uncomment below when you have implemented linear probing.
-        std::cout << "linear testing" << std::endl;
         HashTableLinear<string> linear_probing_table;
         TestFunctionForHashTable(linear_probing_table, words_filename,
         			 query_filename);
     }
     else if (param_flag == "quadratic")
     {
-        std::cout << "quadratic testing" << std::endl;
         HashTable<string> quadratic_probing_table;
         TestFunctionForHashTable(quadratic_probing_table, words_filename,
                                  query_filename);
     }
     else if (param_flag == "double")
     {
-        std::cout << "double testing" << std::endl;
         cout << "r_value: " << R << endl;
         // Uncomment below when you have implemented double hashing.
-        HashTableDouble<string> double_probing_table;
+        HashTableDouble<string> double_probing_table(R, 101);
         TestFunctionForHashTable(double_probing_table, words_filename,
         			 query_filename);
     }
