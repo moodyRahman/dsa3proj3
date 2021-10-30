@@ -4,8 +4,8 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
-#include "hash_exceptions.h"
-#include "prime.h"
+#include <exception>
+
 
 // Quadratic probing implementation.
 template <typename HashedObj>
@@ -123,6 +123,14 @@ private:
         : element_{std::move(e)}, info_{i} {}
   };
 
+  struct KeyError : public std::exception
+  {
+    const char *what() const throw()
+    {
+      return "Key Not Found";
+    }
+  };
+
   std::vector<HashEntry> array_;
   size_t current_size_;
   size_t total_elements = 0;
@@ -169,6 +177,31 @@ private:
   {
     static std::hash<HashedObj> hf;
     return hf(x) % array_.size();
+  }
+
+  bool IsPrime(size_t n)
+  {
+    if (n == 2 || n == 3)
+      return true;
+
+    if (n == 1 || n % 2 == 0)
+      return false;
+
+    for (int i = 3; i * i <= n; i += 2)
+      if (n % i == 0)
+        return false;
+
+    return true;
+  }
+
+  // Internal method to return a prime number at least as large as n.
+  int NextPrime(size_t n)
+  {
+    if (n % 2 == 0)
+      ++n;
+    while (!IsPrime(n))
+      n += 2;
+    return n;
   }
 };
 

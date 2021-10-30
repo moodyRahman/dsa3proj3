@@ -4,8 +4,8 @@
 #include <vector>
 #include <algorithm>
 #include <functional>
-#include "hash_exceptions.h"
-#include "prime.h"
+#include <exception>
+
 
 template <typename HashedObj>
 class HashTableDouble
@@ -22,12 +22,11 @@ public:
   {
     MakeEmpty();
   }
-	
-	HashTableDouble(int r_value_in, size_t size) : r_value{r_value_in}, array_(NextPrime(size))
-	{
-		MakeEmpty();
-	}
 
+  HashTableDouble(int r_value_in, size_t size) : r_value{r_value_in}, array_(NextPrime(size))
+  {
+    MakeEmpty();
+  }
 
   bool Contains(const HashedObj &x) const
   {
@@ -115,9 +114,8 @@ public:
     return this->array_.size();
   }
 
-	
 private:
-	const int r_value;
+  const int r_value;
   struct HashEntry
   {
     HashedObj element_;
@@ -128,6 +126,14 @@ private:
 
     HashEntry(HashedObj &&e, EntryType i = EMPTY)
         : element_{std::move(e)}, info_{i} {}
+  };
+
+  struct KeyError : public std::exception
+  {
+    const char *what() const throw()
+    {
+      return "Key Not Found";
+    }
   };
 
   std::vector<HashEntry> array_;
@@ -150,13 +156,14 @@ private:
     {
       collisions++;
       i++;
-			current_pos = (current_pos + (i * r_value - (i%r_value))) % array_.size() ;
+      current_pos = (current_pos + (i * r_value - (InternalHash(x) % r_value))) % array_.size();
     }
     return current_pos;
   }
 
   void Rehash()
   {
+
     std::vector<HashEntry> old_array = array_;
 
     // Create new double-sized, empty table.
@@ -176,6 +183,31 @@ private:
   {
     static std::hash<HashedObj> hf;
     return hf(x) % array_.size();
+  }
+
+  bool IsPrime(size_t n)
+  {
+    if (n == 2 || n == 3)
+      return true;
+
+    if (n == 1 || n % 2 == 0)
+      return false;
+
+    for (int i = 3; i * i <= n; i += 2)
+      if (n % i == 0)
+        return false;
+
+    return true;
+  }
+
+  // Internal method to return a prime number at least as large as n.
+  int NextPrime(size_t n)
+  {
+    if (n % 2 == 0)
+      ++n;
+    while (!IsPrime(n))
+      n += 2;
+    return n;
   }
 };
 
