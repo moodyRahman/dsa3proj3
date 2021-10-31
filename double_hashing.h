@@ -150,7 +150,7 @@ private:
 
     size_t current_pos = InternalHash(x);
     int i = 0;
-    temp_collisions = 0;
+    temp_collisions = 1;
     while (array_[current_pos].info_ != EMPTY &&
            array_[current_pos].element_ != x)
     {

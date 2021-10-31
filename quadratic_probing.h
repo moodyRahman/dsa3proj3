@@ -143,7 +143,7 @@ private:
   {
     size_t offset = 1;
     size_t current_pos = InternalHash(x);
-    temp_collisions = 0;
+    temp_collisions = 1;
     while (array_[current_pos].info_ != EMPTY &&
            array_[current_pos].element_ != x)
     {
