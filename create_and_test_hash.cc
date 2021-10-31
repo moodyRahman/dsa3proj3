@@ -39,23 +39,19 @@ void TestFunctionForHashTable(HashTableType &hash_table,
     std::cout << "total_collisions: " << hash_table.TotalCollisions() << std::endl;
 
     std::cout << std::endl;
-
-    std::cout << "Beginning seaching for query words:" << std::endl;
     
     while (qfile >> line)
     {
         try
         {
             int m = hash_table.Get(line);
-            std::cout << line << ": found in " << m << " probes" << std::endl;
+            std::cout << line << " Found " << m << "" << std::endl;
         }
         catch(const std::exception& e)
         {
-            std::cout << line << ": Not found in " << hash_table.temp_collisions << " probes" << std::endl;
+            std::cout << line << ": Not_found " << hash_table.temp_collisions << "" << std::endl;
         }        
     }
-
-    std::cout << std::endl;
 
 }
 
@@ -73,20 +69,7 @@ int testHashingWrapper(int argument_count, char **argument_list)
         const string rvalue(argument_list[4]);
         R = stoi(rvalue);
     }
-    std::cout << std::endl;
-    std::cout << "Input words file is " << words_filename << ", and query file is " << query_filename << std::endl;
-    std::cout << "I will run the linear Hash code" << std::endl << "TestFunctionForHashTables..." << std::endl;
-    std::cout << "Words filename: " << words_filename << std::endl;
-    std::cout << "Query filename: " << query_filename << std::endl;
-
-    std::cout << std::endl;
-
-    std::cout << "Inserting words into the Hash table..." << std::endl;
-
-    std::cout << std::endl;
-
-    std::cout << "Statistics for this Hash Table:" << std::endl;
-
+    
     if (param_flag == "linear")
     {
         // Uncomment below when you have implemented linear probing.
