@@ -40,14 +40,14 @@ public:
       entry.info_ = EMPTY;
   }
 
-  HashedObj Get(const HashedObj &in)
+  int Get(const HashedObj &in)
   {
     size_t current_pos = FindPos(in);
     if (!IsActive(current_pos))
     {
       throw KeyError();
     }
-    return array_[current_pos].element_;
+    return temp_collisions;
   }
 
   bool Insert(const HashedObj &x)
@@ -71,7 +71,6 @@ public:
 
   bool Insert(HashedObj &&x)
   {
-    this->total_elements++;
     // Insert x as active
     size_t current_pos = FindPos(x);
     if (IsActive(current_pos))
@@ -113,7 +112,7 @@ public:
   {
     return this->array_.size();
   }
-
+  int temp_collisions = 0;
 private:
   const int r_value;
   struct HashEntry
@@ -151,13 +150,15 @@ private:
 
     size_t current_pos = InternalHash(x);
     int i = 0;
+    temp_collisions = 0;
     while (array_[current_pos].info_ != EMPTY &&
            array_[current_pos].element_ != x)
     {
-      collisions++;
+      temp_collisions++;
       i++;
       current_pos = (current_pos + (i * r_value - (InternalHash(x) % r_value))) % array_.size();
     }
+    collisions += temp_collisions;
     return current_pos;
   }
 
