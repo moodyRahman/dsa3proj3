@@ -158,7 +158,7 @@ private:
       i++;
       current_pos = (current_pos + (i * r_value - (InternalHash(x) % r_value))) % array_.size();
     }
-    collisions += temp_collisions;
+    collisions += (temp_collisions - 1);
     return current_pos;
   }
 

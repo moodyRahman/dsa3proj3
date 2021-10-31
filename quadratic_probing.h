@@ -153,7 +153,7 @@ private:
       if (current_pos >= array_.size())
         current_pos -= array_.size();
     }
-    collisions += temp_collisions;
+    collisions += (temp_collisions - 1);
     return current_pos;
   }
 
