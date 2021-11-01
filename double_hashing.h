@@ -17,7 +17,6 @@
 #include <functional>
 #include <exception>
 
-
 template <typename HashedObj>
 class HashTableDouble
 {
@@ -124,6 +123,7 @@ public:
     return this->array_.size();
   }
   int temp_collisions_ = 0;
+
 private:
   const int r_value;
   struct HashEntry
@@ -156,6 +156,21 @@ private:
     return array_[current_pos].info_ == ACTIVE;
   }
 
+  unsigned int hash_str(const std::string &str)
+  {
+    unsigned int b = 378551;
+    unsigned int a = 63689;
+    unsigned int hash = 0;
+
+    for (std::size_t i = 0; i < str.length(); i++)
+    {
+      hash = hash * a + str[i];
+      a = a * b;
+    }
+
+    return (hash & 0x7FFFFFFF);
+  }
+
   size_t FindPos(const HashedObj &x)
   {
 
@@ -167,7 +182,8 @@ private:
     {
       temp_collisions_++;
       i++;
-      current_pos = ((InternalHash(x)) + (i * (r_value - (x.size() % r_value)) )) % array_.size();
+
+      current_pos = ((InternalHash(x)) + (i * (r_value - (hash_str(x) % r_value)))) % array_.size();
     }
     collisions_ += (temp_collisions_);
     return current_pos;
