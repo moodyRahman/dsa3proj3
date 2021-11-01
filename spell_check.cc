@@ -51,7 +51,7 @@ void SpellChecker(HashTableDouble<string> &dictionary,
     for (size_t x = 0; x < line.size(); x++)
     {
       line.replace(x, 1, std::string(1, std::tolower(line[x], loc)));
-      if (line[x] == '.' || line[x] == '\'' || line[x] == ',')
+      if (line[x] == '.' || line[x] == ',')
       {
         line.erase(x, x + 1);
       }
