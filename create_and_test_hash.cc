@@ -49,7 +49,7 @@ void TestFunctionForHashTable(HashTableType &hash_table,
         }
         catch(const std::exception& e)
         {
-            std::cout << line << ": Not_found " << hash_table.temp_collisions << "" << std::endl;
+            std::cout << line << ": Not_found " << hash_table.temp_collisions_ << "" << std::endl;
         }        
     }
 
@@ -62,7 +62,7 @@ int testHashingWrapper(int argument_count, char **argument_list)
 {
     const string words_filename(argument_list[1]);
     const string query_filename(argument_list[2]);
-    const string param_flag(argument_list[3]);
+const string param_flag(argument_list[3]);
     int R = 89;
     if (argument_count == 5)
     {

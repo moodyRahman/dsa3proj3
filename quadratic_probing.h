@@ -1,3 +1,15 @@
+/**
+ * @file quadratic_probing.h
+ * @author Moududur Rahman
+ * @brief The header file containing inline implementation for HashTable
+ *        (quadratic implementation)
+ * @version 0.1
+ * @date 2021-11-01
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
+
 #ifndef QUADRATIC_PROBING_H
 #define QUADRATIC_PROBING_H
 
@@ -42,12 +54,12 @@ public:
     {
       throw KeyError();
     }
-    return temp_collisions;
+    return temp_collisions_;
   }
 
   bool Insert(const HashedObj &x)
   {
-    this->total_elements++;
+    this->total_elements_++;
     // Insert x as active
     size_t current_pos = FindPos(x);
     if (IsActive(current_pos))
@@ -95,19 +107,19 @@ public:
 
   int TotalCollisions()
   {
-    return collisions;
+    return collisions_;
   }
 
   int TotalElements()
   {
-    return this->total_elements;
+    return this->total_elements_;
   }
 
   int InternalSize()
   {
     return this->array_.size();
   }
-int temp_collisions = 0;
+int temp_collisions_ = 0;
 private:
   struct HashEntry
   {
@@ -131,8 +143,8 @@ private:
 
   std::vector<HashEntry> array_;
   size_t current_size_;
-  size_t total_elements = 0;
-  size_t collisions = 0;
+  size_t total_elements_ = 0;
+  size_t collisions_ = 0;
 
   bool IsActive(size_t current_pos) const
   {
@@ -143,17 +155,17 @@ private:
   {
     size_t offset = 1;
     size_t current_pos = InternalHash(x);
-    temp_collisions = 1;
+    temp_collisions_ = 1;
     while (array_[current_pos].info_ != EMPTY &&
            array_[current_pos].element_ != x)
     {
-      temp_collisions++;
+      temp_collisions_++;
       current_pos += offset; // Compute ith probe.
       offset += 2;
       if (current_pos >= array_.size())
         current_pos -= array_.size();
     }
-    collisions += (temp_collisions - 1);
+    collisions_ += (temp_collisions_ - 1);
     return current_pos;
   }
 

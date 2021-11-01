@@ -1,6 +1,14 @@
-// YOUR NAME.
-// spell_check.cc: A simple spell checker.
-
+/**
+ * @file spell_check.cc
+ * @author Moududur Rahman
+ * @brief A simple spell checker that reads a document file, a dictionary file, 
+ *        and displays if any words in the document are incorrect 
+ * @version 0.1
+ * @date 2021-11-01
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include <fstream>
 #include <iostream>
 #include <string>
@@ -76,7 +84,7 @@ void SpellChecker(HashTableDouble<string> &dictionary,
           copy = line;
         }
       }
-
+ 
       for (size_t x = 0; x < line.size(); x++)
       {
         copy.erase(x, 1);
