@@ -171,6 +171,7 @@ private:
       current_pos = (current_pos % array_.size());
     }
     collisions_ += (temp_collisions_);
+    temp_collisions_++;
     return current_pos;
   }
 

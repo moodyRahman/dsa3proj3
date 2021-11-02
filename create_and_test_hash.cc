@@ -49,7 +49,7 @@ void TestFunctionForHashTable(HashTableType &hash_table,
         }
         catch(const std::exception& e)
         {
-            std::cout << line << ": Not_found " << hash_table.temp_collisions_ + 1 << "" << std::endl;
+            std::cout << line << ": Not_found " << hash_table.temp_collisions_ << "" << std::endl;
         }        
     }
 
