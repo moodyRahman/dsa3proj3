@@ -156,24 +156,9 @@ private:
     return array_[current_pos].info_ == ACTIVE;
   }
 
-  unsigned int hash_str(const std::string &str)
-  {
-    unsigned int b = 378551;
-    unsigned int a = 63689;
-    unsigned int hash = 0;
-
-    for (std::size_t i = 0; i < str.length(); i++)
-    {
-      hash = hash * a + str[i];
-      a = a * b;
-    }
-
-    return (hash & 0x7FFFFFFF);
-  }
-
   size_t FindPos(const HashedObj &x)
   {
-
+    std::hash<HashedObj> hf;
     size_t current_pos = InternalHash(x);
     int i = 0;
     temp_collisions_ = 0;
@@ -182,8 +167,8 @@ private:
     {
       temp_collisions_++;
       i++;
-
-      current_pos = ((InternalHash(x)) + (i * (r_value - (hash_str(x) % r_value)))) % array_.size();
+      current_pos += (r_value - (hf(x) % r_value));
+      current_pos = (current_pos % array_.size());
     }
     collisions_ += (temp_collisions_);
     return current_pos;
