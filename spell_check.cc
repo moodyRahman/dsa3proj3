@@ -75,6 +75,7 @@ void SpellChecker(HashTableDouble<string> &dictionary,
       std::cout << line << " is INCORRECT" << std::endl;
       string copy = line;
 
+      // generate all of the possible misspellings  
       for (size_t x = 0; x < 26; x++)
       {
         for (size_t y = 0; y < line.size() + 1; y++)
@@ -99,6 +100,7 @@ void SpellChecker(HashTableDouble<string> &dictionary,
         copy = line;
       }
 
+      // try all alternate spellings
       for (auto x : alternate_spellings)
       {
         try

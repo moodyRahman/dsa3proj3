@@ -29,21 +29,43 @@ public:
     DELETED
   };
 
+  /**
+   * @brief Construct a new Hash Table Double object
+   * 
+   * @param size 
+   */
   explicit HashTableDouble(size_t size = 101) : array_(NextPrime(size)), r_value(87)
   {
     MakeEmpty();
   }
 
+  /**
+   * @brief Construct a new Hash Table Double object
+   * 
+   * @param r_value_in 
+   * @param size 
+   */
   HashTableDouble(int r_value_in, size_t size) : r_value{r_value_in}, array_(NextPrime(size))
   {
     MakeEmpty();
   }
 
+  /**
+   * @brief returns if x is in this HashTable object
+   * 
+   * @param x 
+   * @return true 
+   * @return false 
+   */
   bool Contains(const HashedObj &x) const
   {
     return IsActive(FindPos(x));
   }
 
+  /**
+   * @brief deletes all entries in this HashTable
+   * 
+   */
   void MakeEmpty()
   {
     current_size_ = 0;
@@ -51,6 +73,12 @@ public:
       entry.info_ = EMPTY;
   }
 
+  /**
+   * @brief return how many probes it took to find in, otherwise throw an exception
+   * 
+   * @param in 
+   * @return int 
+   */
   int Get(const HashedObj &in)
   {
     size_t current_pos = FindPos(in);
@@ -61,6 +89,13 @@ public:
     return temp_collisions_;
   }
 
+  /**
+   * @brief insert new element into HashTable
+   * 
+   * @param x 
+   * @return true 
+   * @return false 
+   */
   bool Insert(const HashedObj &x)
   {
     this->total_elements_++;
@@ -80,6 +115,13 @@ public:
     return true;
   }
 
+  /**
+   * @brief r value insert function for rehashing
+   * 
+   * @param x 
+   * @return true 
+   * @return false 
+   */
   bool Insert(HashedObj &&x)
   {
     // Insert x as active
@@ -99,6 +141,13 @@ public:
     return true;
   }
 
+  /**
+   * @brief find and remove element x
+   * 
+   * @param x 
+   * @return true 
+   * @return false 
+   */
   bool Remove(const HashedObj &x)
   {
     size_t current_pos = FindPos(x);
@@ -109,16 +158,31 @@ public:
     return true;
   }
 
+  /**
+   * @brief return total collisions that occured while probing
+   * 
+   * @return int 
+   */
   int TotalCollisions()
   {
     return collisions_;
   }
 
+  /**
+   * @brief returns total elements in HashTable
+   * 
+   * @return int 
+   */
   int TotalElements()
   {
     return this->total_elements_;
   }
 
+  /**
+   * @brief returns internal HashTable allocated size
+   * 
+   * @return int 
+   */
   int InternalSize()
   {
     return this->array_.size();
@@ -127,6 +191,11 @@ public:
 
 private:
   const int r_value;
+
+  /**
+   * @brief metadata associates with the object being hashed
+   * 
+   */
   struct HashEntry
   {
     HashedObj element_;
@@ -139,6 +208,10 @@ private:
         : element_{std::move(e)}, info_{i} {}
   };
 
+  /**
+   * @brief error object if a key is not found
+   * 
+   */
   struct KeyError : public std::exception
   {
     const char *what() const throw()
@@ -152,11 +225,24 @@ private:
   size_t total_elements_ = 0;
   size_t collisions_ = 0;
 
+  /**
+   * @brief returns the active metadata from a HashMap slot
+   * 
+   * @param current_pos 
+   * @return true 
+   * @return false 
+   */
   bool IsActive(size_t current_pos) const
   {
     return array_[current_pos].info_ == ACTIVE;
   }
 
+  /**
+   * @brief returns the position of the object x in the HashMap
+   * 
+   * @param x 
+   * @return size_t 
+   */
   size_t FindPos(const HashedObj &x)
   {
     std::hash<HashedObj> hf;
@@ -176,6 +262,11 @@ private:
     return current_pos;
   }
 
+  /**
+   * @brief when the internal vector reaches load capacity, resize the vector and 
+   *        reinsert all elements
+   * 
+   */
   void Rehash()
   {
 
@@ -193,13 +284,25 @@ private:
         Insert(std::move(entry.element_));
   }
 
-  // returns the
+  /**
+   * @brief returns the hash of object x
+   * 
+   * @param x 
+   * @return size_t 
+   */
   size_t InternalHash(const HashedObj &x) const
   {
     static std::hash<HashedObj> hf;
     return hf(x) % array_.size();
   }
 
+  /**
+   * @brief returns if an int n is prime
+   * 
+   * @param n 
+   * @return true 
+   * @return false 
+   */
   bool IsPrime(size_t n)
   {
     if (n == 2 || n == 3)
