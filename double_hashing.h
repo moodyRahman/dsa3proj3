@@ -2,6 +2,7 @@
  * @file double_hashing.h
  * @author Moududur Rahman
  * @brief The header file containing inline implementation for HashTableDouble
+ *        (double hashing implementation)
  * @version 0.1
  * @date 2021-11-01
  * 

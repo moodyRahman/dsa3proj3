@@ -2,7 +2,7 @@
  * @file quadratic_probing.h
  * @author Moududur Rahman
  * @brief The header file containing inline implementation for HashTable
- *        (quadratic implementation)
+ *        (quadratic probing implementation)
  * @version 0.1
  * @date 2021-11-01
  * 

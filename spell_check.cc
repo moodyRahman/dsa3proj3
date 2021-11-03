@@ -84,7 +84,7 @@ void SpellChecker(HashTableDouble<string> &dictionary,
           copy = line;
         }
       }
- 
+
       for (size_t x = 0; x < line.size(); x++)
       {
         copy.erase(x, 1);
@@ -94,26 +94,22 @@ void SpellChecker(HashTableDouble<string> &dictionary,
 
       for (size_t x = 0; x < line.size() - 1; x++)
       {
-        std::swap(copy[x], copy[x+1]);
+        std::swap(copy[x], copy[x + 1]);
         alternate_spellings.push_back(AltSpelling{copy, 'C'});
         copy = line;
       }
 
-      for (auto x: alternate_spellings)
+      for (auto x : alternate_spellings)
       {
         try
         {
           dictionary.Get(x.spelling);
           std::cout << "*** " << line << " -> " << x.spelling << " *** case " << x.type << std::endl;
         }
-        catch(const std::exception& e)
+        catch (const std::exception &e)
         {
-          
         }
-        
       }
-
-
 
       alternate_spellings.clear();
     }

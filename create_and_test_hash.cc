@@ -1,11 +1,19 @@
-// YOUR NAME.
+/**
+ * @file create_and_test_hash.cc
+ * @author Moody Rahman
+ * @brief 
+ * @version 0.1
+ * @date 2021-11-03
+ * 
+ * script to test HashTable insertion and lookup
+ * 
+ * @copyright Copyright (c) 2021
+ * 
+ */
 #include <fstream>
 #include <iostream>
 #include <string>
 
-// Uncomment when you implemented linear probing & double hashing
-// #include "linear_probing.h"
-//#include "double_hashing.h"
 
 #include "quadratic_probing.h"
 #include "linear_probing.h"
